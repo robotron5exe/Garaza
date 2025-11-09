@@ -93,6 +93,43 @@ Priporočeni viri za resnične podatke:
 - **nepremicnine.net** - tržni podatki
 - **Uradni list RS** - javne dražbe in oglasi
 
+### 📚 Vodič za populacijo podatkov
+
+Za podrobna navodila o tem, kako pridobiti in vnesti resnične podatke, glejte:
+
+**[DATA_POPULATION_GUIDE.md](DATA_POPULATION_GUIDE.md)** - Obsežen vodič, ki vključuje:
+- Uradne vire podatkov (GURS, SURS)
+- Metode spletnega zajemanja podatkov
+- Kontaktne informacije za dostop do API-jev
+- Korake za ročni vnos podatkov
+- Pretvorbo SIT v EUR
+- Najboljše prakse za kakovost podatkov
+
+**Pomočna orodja:**
+- `data_helper.py` - Python skripta za obdelavo podatkov
+  - Izračun statistike (avg, min, max, median)
+  - Pretvorba SIT v EUR
+  - Validacija podatkov
+  - Generiranje JavaScript formata za data.js
+  - Interaktivni način vnosa podatkov
+
+- `scraper_example.py` - Primer web scraperja (predloga)
+  - Primer zajemanja podatkov iz nepremicnine.net
+  - Vključuje preverjanje robots.txt
+  - Potrebna prilagoditev CSS selektorjev
+
+**Namestitev orodij:**
+```bash
+# Namestitev Python odvisnosti
+pip install -r requirements.txt
+
+# Zagon pomočnika za podatke
+python3 data_helper.py
+
+# Primer uporabe scraperja (zahteva prilagoditev)
+python3 scraper_example.py
+```
+
 ## 🛠️ Tehnologije
 
 - **HTML5** - struktura
@@ -105,11 +142,15 @@ Priporočeni viri za resnične podatke:
 
 ```
 Garaza/
-├── index.html      # Glavna HTML stran
-├── styles.css      # CSS stilizacija
-├── app.js          # Logika aplikacije in grafi
-├── data.js         # Podatki o cenah nepremičnin
-└── README.md       # Ta datoteka
+├── index.html                   # Glavna HTML stran
+├── styles.css                   # CSS stilizacija
+├── app.js                       # Logika aplikacije in grafi
+├── data.js                      # Podatki o cenah nepremičnin
+├── README.md                    # Ta datoteka
+├── DATA_POPULATION_GUIDE.md     # Vodič za populacijo podatkov
+├── data_helper.py               # Python skripta za obdelavo podatkov
+├── scraper_example.py           # Primer web scraperja
+└── requirements.txt             # Python odvisnosti
 ```
 
 ## 🎨 Prilagajanje
