@@ -1,0 +1,148 @@
+{
+  "metadata": {
+    "source": "NEPREMICNINE.net, Siol.net, 24nep.si, market research",
+    "data_collection_date": "2025-11-09",
+    "geographic_scope": "Maribor, Slovenia",
+    "currency": "EUR",
+    "note": "Limited historical data available; prices estimated from market trends"
+  },
+  "current_listings_2024": [
+    {
+      "location": "Studenci",
+      "type": "parking_space",
+      "size_sqm": 14.4,
+      "year_built": 2024,
+      "price": 9900,
+      "price_per_sqm": 688,
+      "condition": "new_construction",
+      "notes": "New construction parking space"
+    },
+    {
+      "location": "General",
+      "type": "parking_space",
+      "size_sqm": 12.5,
+      "year_built": 2023,
+      "price": 12000,
+      "price_per_sqm": 960,
+      "condition": "new",
+      "notes": "Standard parking spot"
+    },
+    {
+      "location": "Tabor Magdalena",
+      "type": "garage",
+      "size_sqm": 13.0,
+      "year_built": null,
+      "renovated": 2024,
+      "price": 22000,
+      "price_per_sqm": 1692,
+      "condition": "renovated",
+      "notes": "Premium location, recently renovated"
+    },
+    {
+      "location": "Radvanje",
+      "type": "garage",
+      "size_sqm": 13.0,
+      "year_built": "2010s",
+      "price": 13000,
+      "price_per_sqm": 1000,
+      "condition": "good",
+      "notes": "Multiple listings at similar price"
+    },
+    {
+      "location": "Center",
+      "type": "underground",
+      "size_sqm": 14.0,
+      "year_built": 2015,
+      "price": 18000,
+      "price_per_sqm": 1286,
+      "condition": "good",
+      "notes": "Underground parking in city center"
+    }
+  ],
+  "price_summary_2024": {
+    "typical_range": {
+      "min": 9900,
+      "avg": 12500,
+      "max": 22000
+    },
+    "by_location": {
+      "premium_locations": {
+        "areas": ["Tabor Magdalena", "Center"],
+        "price_range": [18000, 22000]
+      },
+      "standard_locations": {
+        "areas": ["Radvanje", "Studenci"],
+        "price_range": [10000, 13000]
+      }
+    },
+    "by_type": {
+      "underground": {
+        "price_range": [15000, 22000],
+        "premium_pct": 20
+      },
+      "surface_garage": {
+        "price_range": [10000, 15000],
+        "premium_pct": 0
+      },
+      "parking_space": {
+        "price_range": [9900, 13000],
+        "premium_pct": -15
+      }
+    },
+    "price_per_sqm": {
+      "min": 688,
+      "avg": 1100,
+      "max": 1692
+    }
+  },
+  "historical_estimates": [
+    {
+      "period": "2008-2010",
+      "price_range": [8000, 12000],
+      "notes": "Peak and early decline period"
+    },
+    {
+      "period": "2011-2014",
+      "price_range": [6000, 10000],
+      "notes": "Crisis bottom period"
+    },
+    {
+      "period": "2015-2018",
+      "price_range": [7000, 11000],
+      "notes": "Early recovery phase"
+    },
+    {
+      "period": "2019-2021",
+      "price_range": [9000, 13000],
+      "notes": "Strong growth period"
+    },
+    {
+      "period": "2022-2024",
+      "price_range": [10000, 22000],
+      "notes": "Current market with wide range by location"
+    }
+  ],
+  "parking_facility_monthly_rates": {
+    "city_parking_house": 89,
+    "forum_parking_house": 75,
+    "effective_date": "2024-01-01",
+    "currency": "EUR"
+  },
+  "street_parking_hourly": {
+    "white_zone_low": 0.60,
+    "white_zone_mid": 1.00,
+    "white_zone_high": 1.70,
+    "currency": "EUR"
+  },
+  "investment_analysis": {
+    "purchase_price_avg": 12000,
+    "monthly_rent_avg": 82,
+    "annual_rent": 984,
+    "management_costs_monthly": 22,
+    "annual_costs": 264,
+    "net_annual_income": 720,
+    "gross_yield_pct": 8.2,
+    "net_yield_pct": 6.0,
+    "comparison_to_apartments": "Superior cash flow: garages 6-7% net vs apartments 2.5-3.5% net"
+  }
+}

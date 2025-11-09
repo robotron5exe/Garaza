@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "source": "NEPREMICNINE.net, Siol.net, GoHome.si, market research",
+    "data_collection_date": "2025-11-09",
+    "geographic_scope": "Ljubljana, Slovenia",
+    "currency": "EUR",
+    "note": "Ljubljana data for comparison with Maribor"
+  },
+  "current_listings_2024": [
+    {
+      "location": "Bežigrad",
+      "type": "parking_space",
+      "size_sqm": 12.5,
+      "year_built": null,
+      "price": 25000,
+      "price_per_sqm": 2000,
+      "condition": "good",
+      "notes": "Premium residential area"
+    },
+    {
+      "location": "Bežigrad",
+      "type": "parking_space",
+      "size_sqm": 11.0,
+      "year_built": null,
+      "price": 22000,
+      "price_per_sqm": 2000,
+      "condition": "good",
+      "notes": "Premium residential area"
+    },
+    {
+      "location": "Center - Kozolec",
+      "type": "underground",
+      "size_sqm": 12.5,
+      "year_built": 2008,
+      "price": 35000,
+      "price_per_sqm": 2800,
+      "condition": "good",
+      "notes": "Prime city center location, parking house"
+    },
+    {
+      "location": "Šiška",
+      "type": "garage",
+      "size_sqm": 12.0,
+      "year_built": null,
+      "price": 11000,
+      "price_per_sqm": 917,
+      "condition": "basic",
+      "notes": "More affordable district"
+    },
+    {
+      "location": "Premium",
+      "type": "parking_space",
+      "size_sqm": 16.5,
+      "year_built": null,
+      "price": 37500,
+      "price_per_sqm": 2273,
+      "condition": "premium",
+      "notes": "High-end location"
+    }
+  ],
+  "price_summary_2024": {
+    "typical_range": {
+      "min": 11000,
+      "avg": 22500,
+      "max": 37500
+    },
+    "by_location": {
+      "center_bezigrag": {
+        "areas": ["Center", "Bežigrad"],
+        "price_range": [22000, 37500]
+      },
+      "standard_districts": {
+        "areas": ["Šiška", "Other"],
+        "price_range": [9000, 15000]
+      }
+    },
+    "average_price_per_sqm": 1487,
+    "price_per_sqm_range": {
+      "min": 750,
+      "avg": 1900,
+      "max": 2800
+    }
+  },
+  "new_construction_baseline_2022": {
+    "price_without_vat": 15000,
+    "vat_rate": 9.5,
+    "notes": "Baseline for new construction projects"
+  },
+  "additional_costs": {
+    "monthly_management": 20,
+    "monthly_reserve_fund": 2,
+    "total_monthly_costs": 22,
+    "annual_costs": 264,
+    "currency": "EUR"
+  },
+  "comparison_to_maribor": {
+    "ljubljana_avg": 22500,
+    "maribor_avg": 12500,
+    "price_differential_pct": 80,
+    "maribor_discount_pct": 44,
+    "notes": "Maribor garages 40-60% cheaper than Ljubljana"
+  }
+}

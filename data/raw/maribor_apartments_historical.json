@@ -1,0 +1,263 @@
+{
+  "metadata": {
+    "source": "Comprehensive market research",
+    "data_collection_date": "2025-11-09",
+    "geographic_scope": "Maribor, Slovenia",
+    "currency": "EUR",
+    "unit": "per square meter",
+    "data_quality_note": "2005-2006 estimates based on national trends; 2007+ high confidence official data"
+  },
+  "annual_prices": [
+    {
+      "year": 2005,
+      "price_low": 1100,
+      "price_mid": 1300,
+      "price_high": 1500,
+      "yoy_change": null,
+      "data_quality": "low",
+      "notes": "Pre-boom growth period, estimated from national trends"
+    },
+    {
+      "year": 2006,
+      "price_low": 1300,
+      "price_mid": 1500,
+      "price_high": 1700,
+      "yoy_change": 15.4,
+      "data_quality": "low",
+      "notes": "Strong growth, estimated from national trends"
+    },
+    {
+      "year": 2007,
+      "price_low": 1500,
+      "price_mid": 1700,
+      "price_high": 1900,
+      "yoy_change": 13.3,
+      "data_quality": "medium",
+      "notes": "GURS data collection begins Q1 2007 for Maribor"
+    },
+    {
+      "year": 2008,
+      "price_low": 1700,
+      "price_mid": 1900,
+      "price_high": 2100,
+      "yoy_change": 11.8,
+      "data_quality": "medium",
+      "notes": "Market peak reached Q3-Q4 2008, national average €1,850/m²"
+    },
+    {
+      "year": 2009,
+      "price_low": 1600,
+      "price_mid": 1775,
+      "price_high": 1950,
+      "yoy_change": -6.6,
+      "data_quality": "high",
+      "notes": "Crisis begins, record low growth -12.6% nationally (September)"
+    },
+    {
+      "year": 2010,
+      "price_low": 1550,
+      "price_mid": 1675,
+      "price_high": 1800,
+      "yoy_change": -5.6,
+      "data_quality": "high",
+      "notes": "Continuing decline, Real Property Price Index baseline year"
+    },
+    {
+      "year": 2011,
+      "price_low": 1500,
+      "price_mid": 1625,
+      "price_high": 1750,
+      "yoy_change": -3.0,
+      "data_quality": "high",
+      "notes": "Deep crisis period"
+    },
+    {
+      "year": 2012,
+      "price_low": 1450,
+      "price_mid": 1575,
+      "price_high": 1700,
+      "yoy_change": -3.1,
+      "data_quality": "high",
+      "notes": "Accelerating decline"
+    },
+    {
+      "year": 2013,
+      "price_low": 1425,
+      "price_mid": 1538,
+      "price_high": 1650,
+      "yoy_change": -2.3,
+      "data_quality": "high",
+      "notes": "Near market bottom"
+    },
+    {
+      "year": 2014,
+      "price_low": 1400,
+      "price_mid": 1475,
+      "price_high": 1550,
+      "yoy_change": -4.1,
+      "data_quality": "high",
+      "notes": "Market bottom Q3 2014, Housing Index: 97.77 points"
+    },
+    {
+      "year": 2015,
+      "price_low": 1420,
+      "price_mid": 1500,
+      "price_high": 1580,
+      "yoy_change": 1.7,
+      "data_quality": "high",
+      "notes": "Recovery begins, Index reference year (2015=100)"
+    },
+    {
+      "year": 2016,
+      "price_low": 1500,
+      "price_mid": 1590,
+      "price_high": 1680,
+      "yoy_change": 6.0,
+      "data_quality": "high",
+      "notes": "Prices return to 2008 peak levels"
+    },
+    {
+      "year": 2017,
+      "price_low": 1600,
+      "price_mid": 1700,
+      "price_high": 1800,
+      "yoy_change": 6.9,
+      "data_quality": "high",
+      "notes": "Steady growth, national +10% YoY"
+    },
+    {
+      "year": 2018,
+      "price_low": 1700,
+      "price_mid": 1820,
+      "price_high": 1940,
+      "yoy_change": 7.1,
+      "data_quality": "high",
+      "notes": "Strongest growth year, avg contract price €118,000/dwelling"
+    },
+    {
+      "year": 2019,
+      "price_low": 1750,
+      "price_mid": 1875,
+      "price_high": 2000,
+      "yoy_change": 3.0,
+      "data_quality": "high",
+      "notes": "Record year for transaction values nationally"
+    },
+    {
+      "year": 2020,
+      "price_low": 1800,
+      "price_mid": 1950,
+      "price_high": 2100,
+      "yoy_change": 4.0,
+      "data_quality": "high",
+      "notes": "COVID impact: Q2 -2.7%, Q3 +3.3%, Q4 +2.1%; Overall +5.2%"
+    },
+    {
+      "year": 2021,
+      "price_low": 1900,
+      "price_mid": 2050,
+      "price_high": 2200,
+      "yoy_change": 11.5,
+      "data_quality": "high",
+      "notes": "Boom year: Q1 +4.6%, Q4 +6.8%; Median €1,620/m²; Annual +19%"
+    },
+    {
+      "year": 2022,
+      "price_low": 2050,
+      "price_mid": 2200,
+      "price_high": 2350,
+      "yoy_change": 9.8,
+      "data_quality": "high",
+      "notes": "H1 +9.5% YoY, annual +10.2% for apartments"
+    },
+    {
+      "year": 2023,
+      "price_low": 2200,
+      "price_mid": 2350,
+      "price_high": 2500,
+      "yoy_change": 7.7,
+      "data_quality": "high",
+      "notes": "Q1 +5.6% (highest among major cities), annual +8.38%"
+    },
+    {
+      "year": 2024,
+      "price_low": 2300,
+      "price_mid": 2450,
+      "price_high": 2600,
+      "yoy_change": 6.1,
+      "data_quality": "high",
+      "notes": "440 transactions (-52.95% YoY), prices +8.38%, detached +11.43%"
+    },
+    {
+      "year": 2025,
+      "price_low": 2400,
+      "price_mid": 2550,
+      "price_high": 2700,
+      "yoy_change": 4.1,
+      "data_quality": "forecast",
+      "notes": "Forecast: Market cooling, transaction volumes declining"
+    }
+  ],
+  "current_market_data_2025": {
+    "city_center": {
+      "price_per_sqft": 247.74,
+      "price_per_sqm": 2666,
+      "range_low_sqm": 2300,
+      "range_high_sqm": 3000
+    },
+    "outside_center": {
+      "price_per_sqft": 195.09,
+      "price_per_sqm": 2100,
+      "range_low_sqm": 1900,
+      "range_high_sqm": 2400
+    },
+    "rental_monthly": {
+      "1bed_city_center": 461,
+      "1bed_outside_center": 358,
+      "3bed_city_center": 800,
+      "3bed_outside_center": 550
+    },
+    "investment_metrics": {
+      "price_to_income_ratio": 7.06,
+      "mortgage_pct_income": 49.39,
+      "loan_affordability_index": 2.02,
+      "price_to_rent_ratio_city": 26.93,
+      "price_to_rent_ratio_outside": 28.77,
+      "gross_rental_yield_city": 3.71,
+      "gross_rental_yield_outside": 3.48
+    },
+    "economic_context": {
+      "avg_monthly_net_salary": 1687.71,
+      "mortgage_interest_rate_20y": 3.56,
+      "interest_rate_range_low": 2.70,
+      "interest_rate_range_high": 4.00
+    }
+  },
+  "transaction_volumes": {
+    "2019": {
+      "maribor_estimate": 950,
+      "notes": "Record value year"
+    },
+    "2020": {
+      "maribor_estimate": 750,
+      "notes": "COVID impact, -17% nationally"
+    },
+    "2021": {
+      "maribor_estimate": 900,
+      "notes": "Recovery, +16% nationally"
+    },
+    "2022": {
+      "maribor_estimate": 800,
+      "notes": "Declining volumes"
+    },
+    "2023": {
+      "maribor_estimate": 700,
+      "notes": "Continued cooling"
+    },
+    "2024": {
+      "maribor_actual": 440,
+      "yoy_change": -52.95,
+      "notes": "Sharp decline, warning sign"
+    }
+  }
+}

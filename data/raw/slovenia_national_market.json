@@ -1,0 +1,192 @@
+{
+  "metadata": {
+    "source": "GURS, SORS, Eurostat, Global Property Guide",
+    "data_collection_date": "2025-11-09",
+    "geographic_scope": "Slovenia (National)",
+    "currency": "EUR",
+    "note": "National market data for context and comparison"
+  },
+  "house_price_index": {
+    "reference_year": 2015,
+    "reference_value": 100,
+    "historical_data": [
+      {
+        "year": 2008,
+        "index": null,
+        "notes": "Peak year before crisis"
+      },
+      {
+        "year": 2009,
+        "index": null,
+        "yoy_change_pct": -12.6,
+        "notes": "Record low in September 2009"
+      },
+      {
+        "year": 2010,
+        "index": 100,
+        "notes": "Alternative baseline for Real Residential Property Price Index"
+      },
+      {
+        "year": 2014,
+        "index": 97.77,
+        "notes": "Market bottom Q3 2014"
+      },
+      {
+        "year": 2015,
+        "index": 100,
+        "notes": "Reference year, recovery begins"
+      },
+      {
+        "year": 2022,
+        "yoy_change_pct": 17.0,
+        "notes": "Record high growth in March 2022"
+      },
+      {
+        "year": 2024,
+        "index": 130.61,
+        "base_2010": true,
+        "notes": "Q4 2024, +30.6% since 2010 in real terms"
+      }
+    ]
+  },
+  "national_apartment_prices": {
+    "2008": {
+      "avg_price_per_sqm": 1850,
+      "notes": "Peak year, also matched in 2019"
+    },
+    "2019": {
+      "avg_price_per_sqm": 1850,
+      "yoy_change_pct": 4.8,
+      "notes": "Recovery to 2008 levels, record transaction values"
+    },
+    "2024": {
+      "median_price_per_sqm": 2920,
+      "yoy_change_pct": 11.88,
+      "notes": "Continued growth despite transaction decline"
+    }
+  },
+  "ljubljana_comparison": {
+    "2021": {
+      "median_price_per_sqm": 3410,
+      "notes": "Q4 2021 data"
+    },
+    "2022": {
+      "avg_price_per_sqm": 3950,
+      "yoy_increase": 540,
+      "notes": "Strong growth year"
+    },
+    "2024": {
+      "median_price_per_sqm": 4510,
+      "yoy_change_pct": 12.03,
+      "notes": "Continued premium pricing"
+    }
+  },
+  "market_growth_since_2019": {
+    "apartments": 67,
+    "houses": 54,
+    "building_land": 72,
+    "unit": "percent",
+    "period": "2019-2024"
+  },
+  "transaction_volumes_national": [
+    {
+      "year": 2019,
+      "total_dwellings": 14000,
+      "yoy_change_pct": 8,
+      "notes": "Record value year"
+    },
+    {
+      "year": 2020,
+      "total_dwellings": 11612,
+      "yoy_change_pct": -17,
+      "notes": "COVID-19 impact"
+    },
+    {
+      "year": 2021,
+      "total_dwellings": 13440,
+      "yoy_change_pct": 16,
+      "notes": "Recovery and boom"
+    },
+    {
+      "year": 2022,
+      "total_dwellings": 11500,
+      "yoy_change_pct": -14,
+      "notes": "Declining volumes"
+    },
+    {
+      "year": 2023,
+      "total_dwellings": 10300,
+      "yoy_change_pct": -10,
+      "notes": "Continued cooling"
+    },
+    {
+      "year": 2024,
+      "total_dwellings": 8124,
+      "yoy_change_pct": -21.13,
+      "total_value_billion": 1.34,
+      "value_change_pct": -14.72,
+      "newly_built_units": 413,
+      "newly_built_pct": 5,
+      "newly_built_change_pct": -50.77,
+      "notes": "Sharp decline in volumes and new construction"
+    }
+  ],
+  "economic_indicators": {
+    "2025_forecast": {
+      "gdp_growth_pct": 2.1,
+      "source": "IMAD (Slovenian Institute of Macroeconomic Analysis)"
+    },
+    "market_cycle_position": "Likely at peak, entering gradual cooling period",
+    "consecutive_years_growth": 10,
+    "as_of_year": 2024
+  },
+  "market_phases": [
+    {
+      "phase": "Boom",
+      "period": "2004-2008",
+      "avg_annual_growth": 16.7,
+      "description": "Rapid price appreciation, peak in Q3-Q4 2008"
+    },
+    {
+      "phase": "Crash",
+      "period": "2008-2014",
+      "total_decline_pct": -20,
+      "bottom_year": 2014,
+      "bottom_quarter": "Q3",
+      "description": "Deep slump during double-dip crisis, prices fell below 2008 peak by 15-20%"
+    },
+    {
+      "phase": "Recovery",
+      "period": "2015-2021",
+      "description": "Steady recovery starting 2015, return to 2008 peak by 2016, boom in 2021 with up to 20% growth in some locations"
+    },
+    {
+      "phase": "Late Cycle",
+      "period": "2022-2024",
+      "description": "Continued price growth but declining transaction volumes, market approaching peak"
+    },
+    {
+      "phase": "Cooling (Forecast)",
+      "period": "2025-2027",
+      "description": "Expected gradual cooling with possible modest growth or stagnation"
+    }
+  ],
+  "regional_price_differentials": {
+    "ljubljana_to_maribor_ratio": 1.85,
+    "notes": "Ljubljana prices typically 80-90% higher than Maribor"
+  },
+  "crisis_impact_by_city": {
+    "ljubljana": {
+      "decline_pct": "14-17",
+      "notes": "Most severe impact"
+    },
+    "maribor": {
+      "decline_pct": "~10",
+      "notes": "Less severe than Ljubljana"
+    },
+    "celje": {
+      "decline_pct": "~10",
+      "notes": "Similar to Maribor"
+    }
+  }
+}
