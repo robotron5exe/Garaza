@@ -2,9 +2,17 @@
 
 ![Project Status](https://img.shields.io/badge/status-active-success.svg)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)
+![Website](https://img.shields.io/badge/website-live-blue.svg)
 ![Data Updated](https://img.shields.io/badge/data-2025--11--09-brightgreen.svg)
 
 A comprehensive analysis and data repository for real estate prices in Maribor, Slovenia, with special focus on garage and parking space markets.
+
+**Features:**
+- 📊 **Interactive Website** - Slovenian web interface with charts
+- 🐍 **Python API** - Data loading, analysis, and visualization tools
+- 📈 **20 Years of Data** - Historical prices from 2005-2025
+- 🚗 **Garage Focus** - Detailed garage market analysis
+- 📉 **Market Insights** - ROI calculators, trend analysis, phase detection
 
 ## 📊 Project Overview
 
@@ -20,13 +28,20 @@ This project provides 20 years of historical real estate market data (2005-2025)
 
 ```
 Garaza/
+├── web/                                 # Interactive website
+│   ├── index.html                       # Main page (Slovenian)
+│   ├── app.js                           # Charts and interactivity
+│   ├── data.js                          # Generated data
+│   ├── styles.css                       # Styling
+│   ├── server.py                        # Simple HTTP server
+│   └── README.md                        # Website documentation
 ├── data/
-│   ├── raw/                              # Original data files
+│   ├── raw/                             # Original data files
 │   │   ├── maribor_apartments_historical.json
 │   │   ├── garage_prices_maribor.json
 │   │   ├── garage_prices_ljubljana.json
 │   │   └── slovenia_national_market.json
-│   └── processed/                        # Processed/cleaned data
+│   └── processed/                       # Processed/cleaned data
 ├── src/
 │   └── garaza/                          # Python package
 │       ├── __init__.py
@@ -34,9 +49,12 @@ Garaza/
 │       ├── analysis.py                  # Analysis functions
 │       └── visualization.py             # Plotting and charts
 ├── scripts/                             # Analysis scripts
-│   ├── generate_report.py
-│   └── price_trends_analysis.py
+│   ├── quick_analysis.py                # Fast market overview
+│   ├── price_trends_analysis.py         # Comprehensive analysis
+│   ├── investment_comparison.py         # ROI comparison
+│   └── generate_web_data.py             # Generate website data
 ├── docs/                                # Additional documentation
+│   └── GETTING_STARTED.md               # Tutorial guide
 ├── maribor-real-estate-analysis-2005-2025.md  # Comprehensive report
 ├── README.md                            # This file
 └── requirements.txt                     # Python dependencies
@@ -87,19 +105,34 @@ Garaza/
 
 ## 🚀 Quick Start
 
-### Installation
+### Option 1: Interactive Website
+
+```bash
+# Launch the website
+cd web
+python server.py
+
+# Open http://localhost:8000 in your browser
+```
+
+**No installation required!** The website works with just Python's built-in HTTP server.
+
+### Option 2: Python Analysis
 
 ```bash
 # Clone the repository
 git clone https://github.com/robotron5exe/Garaza.git
 cd Garaza
 
-# Create virtual environment
+# Create virtual environment (optional but recommended)
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Run quick analysis
+python scripts/quick_analysis.py
 ```
 
 ### Basic Usage

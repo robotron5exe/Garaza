@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cene Nepremičnin Maribor - Analiza Cen Garaž</title>
+    <meta name="description" content="Zgodovinski pregled cen nepremičnin v Mariboru z osredotočenostjo na garaže">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Cene Nepremičnin Maribor</h1>
+            <p class="subtitle">Zgodovinska analiza cen nepremičnin z osredotočenostjo na garaže</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Summary Cards -->
+        <section class="summary-cards">
+            <div class="card">
+                <h3>Povprečna cena garaže</h3>
+                <p class="value" id="avgGaragePrice">-</p>
+                <p class="change" id="garagePriceChange">-</p>
+            </div>
+            <div class="card">
+                <h3>Povprečna cena stanovanja</h3>
+                <p class="value" id="avgApartmentPrice">-</p>
+                <p class="change" id="apartmentPriceChange">-</p>
+            </div>
+            <div class="card">
+                <h3>Povprečna cena hiše</h3>
+                <p class="value" id="avgHousePrice">-</p>
+                <p class="change" id="housePriceChange">-</p>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters">
+            <h2>Filtri</h2>
+            <div class="filter-group">
+                <label>
+                    <input type="checkbox" name="propertyType" value="garages" checked>
+                    Garaže
+                </label>
+                <label>
+                    <input type="checkbox" name="propertyType" value="apartments" checked>
+                    Stanovanja
+                </label>
+                <label>
+                    <input type="checkbox" name="propertyType" value="houses" checked>
+                    Hiše
+                </label>
+            </div>
+            <div class="filter-group">
+                <label for="timeRange">Časovno obdobje:</label>
+                <select id="timeRange">
+                    <option value="all">Vse obdobje</option>
+                    <option value="1990s">1990-2000</option>
+                    <option value="2000s">2000-2010</option>
+                    <option value="2010s">2010-2020</option>
+                    <option value="2020s">2020-danes</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Main Chart -->
+        <section class="chart-section">
+            <h2>Trend cen skozi čas</h2>
+            <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Garage Specific Section -->
+        <section class="garage-section">
+            <h2>🚗 Podrobna analiza garaž</h2>
+            <div class="garage-stats">
+                <div class="stat-box">
+                    <h4>Najnižja cena</h4>
+                    <p id="minGaragePrice">-</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Najvišja cena</h4>
+                    <p id="maxGaragePrice">-</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Mediana</h4>
+                    <p id="medianGaragePrice">-</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Rast od 1990</h4>
+                    <p id="garageGrowth">-</p>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="garageDetailChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Comparison Chart -->
+        <section class="chart-section">
+            <h2>Primerjava rasti cen</h2>
+            <div class="chart-container">
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Data Table -->
+        <section class="data-table-section">
+            <h2>Podrobni podatki</h2>
+            <div class="table-container">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Leto</th>
+                            <th>Garaže (€)</th>
+                            <th>Stanovanja (€/m²)</th>
+                            <th>Hiše (€/m²)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Data Source Info -->
+        <section class="info-section">
+            <h2>ℹ️ O podatkih</h2>
+            <p>Podatki predstavljajo povprečne tržne cene nepremičnin v Mariboru skozi različna obdobja.
+            Cene so prilagojene inflaciji in predstavljene v trenutnih evrih.</p>
+            <p><strong>Opomba:</strong> Trenutno prikazani podatki so示zani vzorci. Za točne podatke uporabite uradne vire
+            (GURS, SURS, nepremicnine.net).</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Cene nepremičnin Maribor - Analiza podatkov | Podatki so示zani</p>
+            <p>Nazadnje posodobljeno: <span id="lastUpdated">-</span></p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
