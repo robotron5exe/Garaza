@@ -1,100 +1,117 @@
-// 3D Garage Parking Game
+// Black Hole Collision - Gravitational Waves Game
 let scene, camera, renderer;
 let player, ground;
-let garages = [];
-let obstacles = [];
+let blackHole1, blackHole2;
+let gravitationalWaves = [];
+let stars = [];
 let score = 0;
 let time = 0;
 let gameActive = true;
 let highScore = 0;
-let parksCount = 0;
+let wavesJumped = 0;
 
 // Game settings
-const PLAYER_SPEED = 0.15;
-const GAME_WIDTH = 20;
-const GAME_DEPTH = 30;
-const SPAWN_DISTANCE = 25;
-const GARAGE_SPAWN_RATE = 0.02;
-const OBSTACLE_SPAWN_RATE = 0.03;
+const PLAYER_SPEED = 0.2;
+const JUMP_FORCE = 0.35;
+const GRAVITY = 0.015;
+const WAVE_SPEED = 0.12;
+const WAVE_SPAWN_INTERVAL = 90; // frames between waves
+const GROUND_Y = -2;
+const PLAYER_RADIUS = 0.4;
+
+// Player physics
+let playerVelocityY = 0;
+let isJumping = false;
+let frameCount = 0;
+let collisionPhase = 0;
 
 // Input
 const keys = {
-    ArrowUp: false,
-    ArrowDown: false,
     ArrowLeft: false,
-    ArrowRight: false
+    ArrowRight: false,
+    ArrowUp: false,
+    Space: false
 };
 
 // Initialize the game
 function init() {
     // Load high score
-    highScore = parseInt(localStorage.getItem('garageGameHighScore') || '0');
+    highScore = parseInt(localStorage.getItem('blackHoleGameHighScore') || '0');
     document.getElementById('high-score').textContent = highScore;
 
     // Scene setup
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x87ceeb);
-    scene.fog = new THREE.Fog(0x87ceeb, 10, 50);
+    scene.background = new THREE.Color(0x000000);
+    scene.fog = new THREE.FogExp2(0x000011, 0.015);
 
     // Camera setup
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 8, 5);
-    camera.lookAt(0, 0, -5);
+    camera.position.set(0, 2, 12);
+    camera.lookAt(0, 0, 0);
 
     // Renderer setup
     const canvas = document.getElementById('canvas');
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    const ambientLight = new THREE.AmbientLight(0x4444ff, 0.3);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(10, 20, 10);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.camera.left = -30;
-    directionalLight.shadow.camera.right = 30;
-    directionalLight.shadow.camera.top = 30;
-    directionalLight.shadow.camera.bottom = -30;
-    scene.add(directionalLight);
+    const pointLight = new THREE.PointLight(0x8888ff, 0.8, 100);
+    pointLight.position.set(0, 10, 10);
+    scene.add(pointLight);
 
-    // Ground
-    const groundGeometry = new THREE.PlaneGeometry(GAME_WIDTH, 100);
+    // Create starfield
+    createStarfield();
+
+    // Ground (platform)
+    const groundGeometry = new THREE.BoxGeometry(15, 0.5, 50);
     const groundMaterial = new THREE.MeshStandardMaterial({
-        color: 0x444444,
-        roughness: 0.8
+        color: 0x1a0033,
+        emissive: 0x110022,
+        roughness: 0.8,
+        metalness: 0.3
     });
     ground = new THREE.Mesh(groundGeometry, groundMaterial);
-    ground.rotation.x = -Math.PI / 2;
-    ground.receiveShadow = true;
+    ground.position.y = GROUND_Y;
     scene.add(ground);
 
-    // Road markings
-    for (let i = -50; i < 50; i += 4) {
-        const lineGeometry = new THREE.BoxGeometry(0.3, 0.05, 2);
-        const lineMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    // Ground grid lines
+    for (let i = -7; i <= 7; i += 1) {
+        const lineGeometry = new THREE.BoxGeometry(0.05, 0.05, 50);
+        const lineMaterial = new THREE.MeshBasicMaterial({
+            color: 0x4400ff,
+            transparent: true,
+            opacity: 0.3
+        });
         const line = new THREE.Mesh(lineGeometry, lineMaterial);
-        line.position.set(0, 0.05, i);
+        line.position.set(i, GROUND_Y + 0.3, 0);
         scene.add(line);
     }
 
-    // Player (car)
+    // Player (astronaut/sphere)
     createPlayer();
+
+    // Black holes
+    createBlackHoles();
 
     // Event listeners
     window.addEventListener('keydown', (e) => {
-        if (keys.hasOwnProperty(e.key)) {
+        if (e.key === ' ') {
+            keys.Space = true;
+            e.preventDefault();
+        } else if (keys.hasOwnProperty(e.key)) {
             keys[e.key] = true;
             e.preventDefault();
         }
     });
 
     window.addEventListener('keyup', (e) => {
-        if (keys.hasOwnProperty(e.key)) {
+        if (e.key === ' ') {
+            keys.Space = false;
+        } else if (keys.hasOwnProperty(e.key)) {
             keys[e.key] = false;
-            e.preventDefault();
         }
     });
 
@@ -107,254 +124,305 @@ function init() {
     startTimer();
 }
 
-function createPlayer() {
-    const carGroup = new THREE.Group();
+function createStarfield() {
+    const starGeometry = new THREE.BufferGeometry();
+    const starVertices = [];
 
-    // Car body
-    const bodyGeometry = new THREE.BoxGeometry(1.2, 0.6, 2);
-    const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-    body.position.y = 0.4;
-    body.castShadow = true;
-    carGroup.add(body);
+    for (let i = 0; i < 1000; i++) {
+        const x = (Math.random() - 0.5) * 200;
+        const y = (Math.random() - 0.5) * 200;
+        const z = (Math.random() - 0.5) * 200;
+        starVertices.push(x, y, z);
+    }
 
-    // Car roof
-    const roofGeometry = new THREE.BoxGeometry(0.9, 0.5, 1.2);
-    const roofMaterial = new THREE.MeshStandardMaterial({ color: 0xcc0000 });
-    const roof = new THREE.Mesh(roofGeometry, roofMaterial);
-    roof.position.y = 0.9;
-    roof.position.z = -0.2;
-    roof.castShadow = true;
-    carGroup.add(roof);
+    starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
 
-    // Wheels
-    const wheelGeometry = new THREE.CylinderGeometry(0.25, 0.25, 0.2, 16);
-    const wheelMaterial = new THREE.MeshStandardMaterial({ color: 0x222222 });
-
-    const wheelPositions = [
-        [-0.6, 0.25, 0.7],
-        [0.6, 0.25, 0.7],
-        [-0.6, 0.25, -0.7],
-        [0.6, 0.25, -0.7]
-    ];
-
-    wheelPositions.forEach(pos => {
-        const wheel = new THREE.Mesh(wheelGeometry, wheelMaterial);
-        wheel.rotation.z = Math.PI / 2;
-        wheel.position.set(...pos);
-        wheel.castShadow = true;
-        carGroup.add(wheel);
+    const starMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.3,
+        transparent: true,
+        opacity: 0.8
     });
 
-    carGroup.position.set(0, 0, 0);
-    player = carGroup;
+    const starField = new THREE.Points(starGeometry, starMaterial);
+    scene.add(starField);
+    stars.push(starField);
+}
+
+function createPlayer() {
+    const playerGroup = new THREE.Group();
+
+    // Main body (sphere)
+    const bodyGeometry = new THREE.SphereGeometry(PLAYER_RADIUS, 32, 32);
+    const bodyMaterial = new THREE.MeshStandardMaterial({
+        color: 0x00ffff,
+        emissive: 0x00aaaa,
+        metalness: 0.8,
+        roughness: 0.2
+    });
+    const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+    playerGroup.add(body);
+
+    // Glow ring
+    const ringGeometry = new THREE.TorusGeometry(PLAYER_RADIUS + 0.1, 0.05, 16, 32);
+    const ringMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00ffff,
+        transparent: true,
+        opacity: 0.6
+    });
+    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+    ring.rotation.x = Math.PI / 2;
+    playerGroup.add(ring);
+
+    playerGroup.position.set(0, GROUND_Y + 1, 0);
+    player = playerGroup;
     scene.add(player);
 }
 
-function createGarage(x, z) {
-    const garageGroup = new THREE.Group();
+function createBlackHoles() {
+    // Black Hole 1 (left)
+    const blackHole1Group = new THREE.Group();
 
-    // Garage structure
-    const wallMaterial = new THREE.MeshStandardMaterial({ color: 0x8b4513 });
+    // Core
+    const core1Geometry = new THREE.SphereGeometry(1.5, 32, 32);
+    const core1Material = new THREE.MeshBasicMaterial({
+        color: 0x000000
+    });
+    const core1 = new THREE.Mesh(core1Geometry, core1Material);
+    blackHole1Group.add(core1);
 
-    // Back wall
-    const backWall = new THREE.Mesh(new THREE.BoxGeometry(3, 2.5, 0.2), wallMaterial);
-    backWall.position.z = -1.4;
-    backWall.castShadow = true;
-    garageGroup.add(backWall);
+    // Accretion disk
+    const disk1Geometry = new THREE.TorusGeometry(2.5, 0.4, 16, 64);
+    const disk1Material = new THREE.MeshBasicMaterial({
+        color: 0xff6600,
+        transparent: true,
+        opacity: 0.7
+    });
+    const disk1 = new THREE.Mesh(disk1Geometry, disk1Material);
+    disk1.rotation.x = Math.PI / 2.3;
+    blackHole1Group.add(disk1);
 
-    // Left wall
-    const leftWall = new THREE.Mesh(new THREE.BoxGeometry(0.2, 2.5, 3), wallMaterial);
-    leftWall.position.x = -1.4;
-    leftWall.castShadow = true;
-    garageGroup.add(leftWall);
+    // Glow
+    const glow1Geometry = new THREE.SphereGeometry(2, 32, 32);
+    const glow1Material = new THREE.MeshBasicMaterial({
+        color: 0xff4400,
+        transparent: true,
+        opacity: 0.3
+    });
+    const glow1 = new THREE.Mesh(glow1Geometry, glow1Material);
+    blackHole1Group.add(glow1);
 
-    // Right wall
-    const rightWall = new THREE.Mesh(new THREE.BoxGeometry(0.2, 2.5, 3), wallMaterial);
-    rightWall.position.x = 1.4;
-    rightWall.castShadow = true;
-    garageGroup.add(rightWall);
+    blackHole1Group.position.set(-8, 8, -15);
+    blackHole1 = blackHole1Group;
+    scene.add(blackHole1);
 
-    // Roof
-    const roofMaterial = new THREE.MeshStandardMaterial({ color: 0x654321 });
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.2, 3.2), roofMaterial);
-    roof.position.y = 1.3;
-    roof.castShadow = true;
-    garageGroup.add(roof);
+    // Black Hole 2 (right)
+    const blackHole2Group = new THREE.Group();
 
-    // Door frame (front opening)
-    const doorFrameTop = new THREE.Mesh(new THREE.BoxGeometry(3, 0.3, 0.2), wallMaterial);
-    doorFrameTop.position.set(0, 1.1, 1.4);
-    doorFrameTop.castShadow = true;
-    garageGroup.add(doorFrameTop);
+    const core2 = new THREE.Mesh(core1Geometry, core1Material);
+    blackHole2Group.add(core2);
 
-    // Parking indicator (glowing green)
-    const indicatorGeometry = new THREE.BoxGeometry(0.4, 0.4, 0.1);
-    const indicatorMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const indicator = new THREE.Mesh(indicatorGeometry, indicatorMaterial);
-    indicator.position.set(0, 2, -1.3);
-    garageGroup.add(indicator);
+    const disk2Geometry = new THREE.TorusGeometry(2.5, 0.4, 16, 64);
+    const disk2Material = new THREE.MeshBasicMaterial({
+        color: 0x0088ff,
+        transparent: true,
+        opacity: 0.7
+    });
+    const disk2 = new THREE.Mesh(disk2Geometry, disk2Material);
+    disk2.rotation.x = Math.PI / 2.3;
+    blackHole2Group.add(disk2);
 
-    garageGroup.position.set(x, 1.25, z);
-    garageGroup.userData.isGarage = true;
+    const glow2 = new THREE.Mesh(glow1Geometry.clone(), glow1Material.clone());
+    glow2.material.color.set(0x0066ff);
+    blackHole2Group.add(glow2);
 
-    scene.add(garageGroup);
-    garages.push(garageGroup);
+    blackHole2Group.position.set(8, 8, -15);
+    blackHole2 = blackHole2Group;
+    scene.add(blackHole2);
 }
 
-function createObstacle(x, z) {
-    const obstacleGroup = new THREE.Group();
+function updateBlackHoles() {
+    if (!blackHole1 || !blackHole2) return;
 
-    // Random obstacle type
-    const type = Math.random();
+    // Rotate accretion disks
+    blackHole1.children[1].rotation.z += 0.02;
+    blackHole2.children[1].rotation.z -= 0.02;
 
-    if (type < 0.5) {
-        // Cone
-        const coneGeometry = new THREE.ConeGeometry(0.4, 1.2, 8);
-        const coneMaterial = new THREE.MeshStandardMaterial({ color: 0xff6600 });
-        const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-        cone.position.y = 0.6;
-        cone.castShadow = true;
-        obstacleGroup.add(cone);
+    // Pulse glow
+    const pulseScale = 1 + Math.sin(frameCount * 0.05) * 0.1;
+    blackHole1.children[2].scale.set(pulseScale, pulseScale, pulseScale);
+    blackHole2.children[2].scale.set(pulseScale, pulseScale, pulseScale);
 
-        // White stripe
-        const stripeGeometry = new THREE.CylinderGeometry(0.42, 0.42, 0.3, 8);
-        const stripeMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        const stripe = new THREE.Mesh(stripeGeometry, stripeMaterial);
-        stripe.position.y = 0.6;
-        obstacleGroup.add(stripe);
+    // Move black holes towards each other (orbital and collision)
+    collisionPhase += 0.0005;
+
+    const orbitRadius = 8 - collisionPhase * 5;
+    const angle = frameCount * 0.01;
+
+    if (orbitRadius > 1) {
+        blackHole1.position.x = -orbitRadius * Math.cos(angle);
+        blackHole1.position.z = -15 + orbitRadius * Math.sin(angle) * 0.5;
+
+        blackHole2.position.x = orbitRadius * Math.cos(angle);
+        blackHole2.position.z = -15 - orbitRadius * Math.sin(angle) * 0.5;
     } else {
-        // Barrier
-        const barrierGeometry = new THREE.BoxGeometry(2, 0.3, 0.3);
-        const barrierMaterial = new THREE.MeshStandardMaterial({
-            color: 0xff0000,
-            emissive: 0x440000
-        });
-        const barrier = new THREE.Mesh(barrierGeometry, barrierMaterial);
-        barrier.position.y = 0.5;
-        barrier.castShadow = true;
-        obstacleGroup.add(barrier);
-
-        // Posts
-        const postGeometry = new THREE.CylinderGeometry(0.1, 0.1, 1, 8);
-        const postMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
-
-        [-0.9, 0.9].forEach(xPos => {
-            const post = new THREE.Mesh(postGeometry, postMaterial);
-            post.position.set(xPos, 0.5, 0);
-            post.castShadow = true;
-            obstacleGroup.add(post);
-        });
+        // Merged state - oscillate
+        const mergeX = Math.sin(frameCount * 0.03) * 0.5;
+        blackHole1.position.set(mergeX, 8, -15);
+        blackHole2.position.set(mergeX, 8, -15);
     }
+}
 
-    obstacleGroup.position.set(x, 0, z);
-    obstacleGroup.userData.isObstacle = true;
+function createGravitationalWave(side) {
+    const waveGroup = new THREE.Group();
 
-    scene.add(obstacleGroup);
-    obstacles.push(obstacleGroup);
+    // Main wave ring
+    const ringGeometry = new THREE.TorusGeometry(2, 0.15, 16, 32);
+    const ringMaterial = new THREE.MeshBasicMaterial({
+        color: side === 'left' ? 0xff6600 : 0x0088ff,
+        transparent: true,
+        opacity: 0.8,
+        emissive: side === 'left' ? 0xff4400 : 0x0066ff
+    });
+    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+    ring.rotation.y = Math.PI / 2;
+    waveGroup.add(ring);
+
+    // Inner glow ring
+    const innerRingGeometry = new THREE.TorusGeometry(1.5, 0.1, 16, 32);
+    const innerRingMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.5
+    });
+    const innerRing = new THREE.Mesh(innerRingGeometry, innerRingMaterial);
+    innerRing.rotation.y = Math.PI / 2;
+    waveGroup.add(innerRing);
+
+    // Position wave
+    const startX = side === 'left' ? blackHole1.position.x : blackHole2.position.x;
+    waveGroup.position.set(startX, 0, -10);
+
+    waveGroup.userData.side = side;
+    waveGroup.userData.passed = false;
+
+    scene.add(waveGroup);
+    gravitationalWaves.push(waveGroup);
 }
 
 function updatePlayer() {
     if (!gameActive) return;
 
-    let moved = false;
-
-    if (keys.ArrowLeft && player.position.x > -GAME_WIDTH / 2 + 1) {
+    // Horizontal movement
+    if (keys.ArrowLeft && player.position.x > -6.5) {
         player.position.x -= PLAYER_SPEED;
-        moved = true;
     }
-    if (keys.ArrowRight && player.position.x < GAME_WIDTH / 2 - 1) {
+    if (keys.ArrowRight && player.position.x < 6.5) {
         player.position.x += PLAYER_SPEED;
-        moved = true;
-    }
-    if (keys.ArrowUp && player.position.z > -GAME_DEPTH) {
-        player.position.z -= PLAYER_SPEED;
-        moved = true;
-    }
-    if (keys.ArrowDown && player.position.z < 5) {
-        player.position.z += PLAYER_SPEED;
-        moved = true;
     }
 
-    // Slight rotation when moving
-    if (moved) {
-        if (keys.ArrowLeft) player.rotation.y = Math.PI / 16;
-        else if (keys.ArrowRight) player.rotation.y = -Math.PI / 16;
-        else player.rotation.y *= 0.9;
+    // Jump
+    if ((keys.ArrowUp || keys.Space) && !isJumping) {
+        playerVelocityY = JUMP_FORCE;
+        isJumping = true;
     }
 
-    // Camera follows player
-    camera.position.x = player.position.x;
-    camera.position.z = player.position.z + 5;
-    camera.lookAt(player.position.x, 0, player.position.z - 5);
+    // Apply gravity
+    playerVelocityY -= GRAVITY;
+    player.position.y += playerVelocityY;
+
+    // Ground collision
+    if (player.position.y <= GROUND_Y + 1) {
+        player.position.y = GROUND_Y + 1;
+        playerVelocityY = 0;
+        isJumping = false;
+    }
+
+    // Rotate player when moving
+    if (keys.ArrowLeft || keys.ArrowRight) {
+        player.rotation.y += 0.1;
+    }
+
+    // Pulse the player ring
+    if (player.children[1]) {
+        player.children[1].rotation.z += 0.05;
+        const scale = 1 + Math.sin(frameCount * 0.1) * 0.1;
+        player.children[1].scale.set(scale, scale, scale);
+    }
 }
 
-function spawnObjects() {
+function spawnWaves() {
     if (!gameActive) return;
 
-    // Spawn garages
-    if (Math.random() < GARAGE_SPAWN_RATE) {
-        const x = (Math.random() - 0.5) * (GAME_WIDTH - 4);
-        const z = player.position.z - SPAWN_DISTANCE;
-        createGarage(x, z);
-    }
+    frameCount++;
 
-    // Spawn obstacles
-    if (Math.random() < OBSTACLE_SPAWN_RATE) {
-        const x = (Math.random() - 0.5) * (GAME_WIDTH - 2);
-        const z = player.position.z - SPAWN_DISTANCE;
-        createObstacle(x, z);
+    // Spawn waves periodically
+    if (frameCount % WAVE_SPAWN_INTERVAL === 0) {
+        const side = Math.random() < 0.5 ? 'left' : 'right';
+        createGravitationalWave(side);
     }
+}
+
+function updateWaves() {
+    gravitationalWaves.forEach((wave, index) => {
+        // Move wave towards player
+        wave.position.z += WAVE_SPEED;
+
+        // Expand wave as it travels
+        const scale = 1 + (wave.position.z + 10) * 0.05;
+        wave.scale.set(scale, scale, scale);
+
+        // Fade out as it expands
+        wave.children.forEach(child => {
+            child.material.opacity = Math.max(0.2, 0.8 - (wave.position.z + 10) * 0.03);
+        });
+
+        // Rotate wave
+        wave.rotation.z += 0.02;
+
+        // Remove wave if it's behind the player
+        if (wave.position.z > 15) {
+            scene.remove(wave);
+            gravitationalWaves.splice(index, 1);
+        }
+    });
 }
 
 function checkCollisions() {
     if (!gameActive) return;
 
-    const playerBox = new THREE.Box3().setFromObject(player);
+    gravitationalWaves.forEach((wave, index) => {
+        // Check if wave is at player's Z position
+        const distanceZ = Math.abs(wave.position.z - player.position.z);
 
-    // Check garage collisions (scoring)
-    garages.forEach((garage, index) => {
-        const garageBox = new THREE.Box3().setFromObject(garage);
-        if (playerBox.intersectsBox(garageBox)) {
-            // Successfully parked!
-            score += 10;
-            parksCount++;
+        if (distanceZ < 1 && !wave.userData.passed) {
+            // Check if player is in the wave's path
+            const distanceX = Math.abs(wave.position.x - player.position.x);
+            const waveRadius = 2 * wave.scale.x;
+
+            // Player is within the wave's horizontal range
+            if (distanceX < waveRadius) {
+                // Check if player jumped over it
+                if (player.position.y > GROUND_Y + 2.5) {
+                    // Successfully jumped!
+                    wave.userData.passed = true;
+                    score += 10;
+                    wavesJumped++;
+                    updateScore();
+                    showMessage('Odličen skok! +10');
+                } else {
+                    // Hit the wave
+                    gameOver();
+                }
+            }
+        }
+
+        // Mark waves that passed by
+        if (wave.position.z > player.position.z + 2 && !wave.userData.passed) {
+            wave.userData.passed = true;
+            score += 5;
             updateScore();
-            showMessage('Odlično parkiranje! +10');
-
-            // Remove garage
-            scene.remove(garage);
-            garages.splice(index, 1);
         }
-    });
-
-    // Check obstacle collisions (game over)
-    obstacles.forEach(obstacle => {
-        const obstacleBox = new THREE.Box3().setFromObject(obstacle);
-        if (playerBox.intersectsBox(obstacleBox)) {
-            gameOver();
-        }
-    });
-}
-
-function cleanupObjects() {
-    // Remove objects that are behind the player
-    const cleanupDistance = player.position.z + 10;
-
-    garages = garages.filter(garage => {
-        if (garage.position.z > cleanupDistance) {
-            scene.remove(garage);
-            return false;
-        }
-        return true;
-    });
-
-    obstacles = obstacles.filter(obstacle => {
-        if (obstacle.position.z > cleanupDistance) {
-            scene.remove(obstacle);
-            return false;
-        }
-        return true;
     });
 }
 
@@ -363,7 +431,7 @@ function updateScore() {
 
     if (score > highScore) {
         highScore = score;
-        localStorage.setItem('garageGameHighScore', highScore);
+        localStorage.setItem('blackHoleGameHighScore', highScore);
         document.getElementById('high-score').textContent = highScore;
     }
 }
@@ -391,7 +459,7 @@ function gameOver() {
     gameActive = false;
 
     document.getElementById('final-score').textContent = score;
-    document.getElementById('parks-count').textContent = parksCount;
+    document.getElementById('waves-count').textContent = wavesJumped;
     document.getElementById('game-over').style.display = 'block';
 }
 
@@ -399,8 +467,10 @@ function restartGame() {
     // Reset game state
     score = 0;
     time = 0;
-    parksCount = 0;
+    wavesJumped = 0;
     gameActive = true;
+    frameCount = 0;
+    collisionPhase = 0;
 
     // Reset UI
     updateScore();
@@ -408,14 +478,18 @@ function restartGame() {
     document.getElementById('game-over').style.display = 'none';
 
     // Reset player position
-    player.position.set(0, 0, 0);
-    player.rotation.y = 0;
+    player.position.set(0, GROUND_Y + 1, 0);
+    playerVelocityY = 0;
+    isJumping = false;
 
-    // Clear all objects
-    garages.forEach(garage => scene.remove(garage));
-    obstacles.forEach(obstacle => scene.remove(obstacle));
-    garages = [];
-    obstacles = [];
+    // Clear all waves
+    gravitationalWaves.forEach(wave => scene.remove(wave));
+    gravitationalWaves = [];
+
+    // Reset black holes
+    scene.remove(blackHole1);
+    scene.remove(blackHole2);
+    createBlackHoles();
 }
 
 function onWindowResize() {
@@ -427,10 +501,16 @@ function onWindowResize() {
 function animate() {
     requestAnimationFrame(animate);
 
+    updateBlackHoles();
     updatePlayer();
-    spawnObjects();
+    spawnWaves();
+    updateWaves();
     checkCollisions();
-    cleanupObjects();
+
+    // Rotate starfield slowly
+    if (stars[0]) {
+        stars[0].rotation.y += 0.0002;
+    }
 
     renderer.render(scene, camera);
 }

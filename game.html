@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Garage Game - Parkiraj v Garažo!</title>
+    <title>Black Hole Collision - Gravitational Waves!</title>
     <style>
         * {
             margin: 0;
@@ -14,7 +14,7 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #000000 0%, #1a0033 100%);
         }
 
         #game-container {
@@ -222,17 +222,18 @@
 
             <div id="controls">
                 <h3>🎮 Nadzor</h3>
-                <p><span class="key">↑</span> <span class="key">↓</span> <span class="key">←</span> <span class="key">→</span> Premikaj avto</p>
-                <p>Parkiraj v garaže in se izogibaj oviram!</p>
+                <p><span class="key">SPACE</span> ali <span class="key">↑</span> Skoči</p>
+                <p><span class="key">←</span> <span class="key">→</span> Premikaj levo/desno</p>
+                <p>Preskakuj gravitacijske valove iz črnih lukenj!</p>
             </div>
         </div>
 
         <div id="message"></div>
 
         <div id="game-over">
-            <h2>🎉 Igra končana!</h2>
+            <h2>🌌 Igra končana!</h2>
             <p>Tvoj rezultat: <span id="final-score">0</span></p>
-            <p>Število parkiranj: <span id="parks-count">0</span></p>
+            <p>Preskočeni valovi: <span id="waves-count">0</span></p>
             <button id="restart-btn">Igraj znova</button>
         </div>
     </div>
