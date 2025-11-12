@@ -51,6 +51,52 @@ header h1 {
 .subtitle {
     font-size: 1.1rem;
     opacity: 0.9;
+    margin-bottom: 1rem;
+}
+
+/* Header Navigation */
+.header-nav {
+    margin-top: 1.5rem;
+}
+
+.nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    text-decoration: none;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.nav-link:hover {
+    background: rgba(0, 255, 65, 0.15);
+    border-color: #00ff41;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 65, 0.3);
+}
+
+.terminal-icon {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #00ff41;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
 }
 
 /* Container */
