@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Garage Game - Parkiraj v Garažo!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            color: white;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        #controls h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        #controls p {
+            margin: 5px 0;
+            opacity: 0.9;
+        }
+
+        .key {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 0 3px;
+            font-weight: bold;
+        }
+
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            display: none;
+            pointer-events: all;
+        }
+
+        #game-over h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #4ade80;
+        }
+
+        #game-over p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        #restart-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        #restart-btn:hover {
+            transform: scale(1.05);
+        }
+
+        #back-link {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            pointer-events: all;
+            transition: transform 0.2s;
+        }
+
+        #back-link:hover {
+            transform: scale(1.05);
+        }
+
+        #message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(74, 222, 128, 0.9);
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            display: none;
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 24px;
+            }
+
+            #controls {
+                bottom: 10px;
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+
+            #game-over {
+                padding: 30px 20px;
+            }
+
+            #game-over h2 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="canvas"></canvas>
+
+        <div id="ui">
+            <a href="index.html" id="back-link">← Nazaj na cene</a>
+
+            <div id="header">
+                <div class="stat-box">
+                    <div class="stat-label">Rezultat</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Čas</div>
+                    <div class="stat-value" id="time">0s</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Najvišji rezultat</div>
+                    <div class="stat-value" id="high-score">0</div>
+                </div>
+            </div>
+
+            <div id="controls">
+                <h3>🎮 Nadzor</h3>
+                <p><span class="key">↑</span> <span class="key">↓</span> <span class="key">←</span> <span class="key">→</span> Premikaj avto</p>
+                <p>Parkiraj v garaže in se izogibaj oviram!</p>
+            </div>
+        </div>
+
+        <div id="message"></div>
+
+        <div id="game-over">
+            <h2>🎉 Igra končana!</h2>
+            <p>Tvoj rezultat: <span id="final-score">0</span></p>
+            <p>Število parkiranj: <span id="parks-count">0</span></p>
+            <button id="restart-btn">Igraj znova</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
